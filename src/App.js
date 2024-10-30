@@ -1,13 +1,14 @@
-import React from 'react';
-import YouTubeLikePlayer from './components/YouTubeLikePlayer';
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import HomePage from "./pages/HomePage";
 
 function App() {
-  const videoSrc = 'https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8'; // Example HLS stream
-
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-900 App">
-      <YouTubeLikePlayer videoSrc={videoSrc} videoTitle="Awesome Live Stream" />
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+      </Routes>
+    </Router>
   );
 }
 
