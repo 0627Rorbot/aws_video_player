@@ -3,16 +3,19 @@ import { MdNavigateBefore, MdNavigateNext } from "react-icons/md";
 import DatePicker from "react-datepicker";
 import { IoPersonCircleOutline } from "react-icons/io5";
 import { FaRegCalendarAlt } from "react-icons/fa";
+import { Loader2 } from 'lucide-react'
 import axios from "axios";
 
 import "react-datepicker/dist/react-datepicker.css";
 
 const VideoPlayer = () => {
   const [showInfoPanel, setShowInfoPanel] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [showThumbnail, setShowThumbnail] = useState(false);
+  const [isLoading, setIsLoading] = useState(true)
   const [first, setFirst] = useState(false)
 
   const [hoverVisible, setHoverVisible] = useState(false);
+  const videoRef = useRef(null);
   
   const [videoData, setVideoData] = useState({
     date : "2021-10-06T05:14:00.000Z",
@@ -30,6 +33,8 @@ const VideoPlayer = () => {
   });
 
   const onNextVideo = async(date) => {
+    setIsLoading(true)
+
     const video = await API.get(`/videos/next`, {
       params: {
         date: date
@@ -40,9 +45,12 @@ const VideoPlayer = () => {
     if(video.data.status) {
       setVideoData(video.data.data)
     }
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
+    
     const getRecentVideo = async () => {
       try {
         const video = await API.get(`/videos/recent`);
@@ -55,11 +63,29 @@ const VideoPlayer = () => {
         console.log(err);
       } 
     };
+    
+    setIsLoading(true)
 
     getRecentVideo();
-  }, [])
+    
+    setIsLoading(false)
+  }, [first])
   
+  // useEffect(() => {
+  //   if(!showThumbnail){
+  //     const timer = setTimeout(() => {
+  //       setShowThumbnail(false);
+  //       videoRef.current.play(); // Start playing the video
+  //     }, 3000); // 3000 milliseconds = 3 seconds
+  
+  //     // Clean up the timer when the component unmounts
+  //     return () => clearTimeout(timer);
+  //   }
+  // }, [showThumbnail]);
+
   const onDateVideo = async(date) => {
+    setIsLoading(true)
+
     const video = await API.get(`/videos/date`, {
       params: {
         date: date
@@ -71,14 +97,32 @@ const VideoPlayer = () => {
       setVideoData(video.data.data)
     }
     else setSelectedDate(videoData.date)
+
+    setIsLoading(false)
+  }
+
+  const onLiveVideo = async() => {
+    setIsLoading(true)
+
+    const video = await API.get(`/videos/live`);
+    console.log(video);
+    
+    if(video.data.status) {
+      setVideoData(video.data.data)
+    }
+    else setSelectedDate(videoData.date)
+
+    setIsLoading(false)
   }
 
   useEffect(() => {
-    setIsPlaying(false)
+    setShowThumbnail(false)
     setSelectedDate(videoData.date)
   }, [videoData])
   
   const onBeforeVideo = async(date) => {
+    setIsLoading(true)
+
     const video = await API.get(`/videos/before`, {
       params: {
         date: date
@@ -90,35 +134,44 @@ const VideoPlayer = () => {
       setVideoData(video.data.data)
       console.log(video.data.data.video);
     }
+
+    setIsLoading(false)
   }
 
   return (
-    <div className="relative flex flex-col w-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-lg md:flex-row">
-
-      {/* Video Container */}
+    <div className="relative flex flex-col w-full h-full max-w-5xl mx-auto overflow-hidden rounded-lg shadow-lg md:flex-row">
+    
       <div
         className="relative w-full"
       >
-        {!isPlaying && (
+        {!showThumbnail && (
           <div
             className="absolute top-0 left-0 z-50 flex flex-row items-center justify-center w-full h-full duration-300 ease-in-out thumbnail-overlay"
-            onClick={() => setIsPlaying(true)}
+            onClick={() => setShowThumbnail(true)}
           >
             <img src={`${videoData.image}`} className="w-full h-full"/>
           </div>
         )}
 
         <video
+          ref={videoRef}
           controls
-          className="w-full h-auto rounded-none shadow-xl md:rounded-l-3xl"
+          className="w-full h-[600px] rounded-none shadow-xl md:rounded-l-3xl"
           src={`${videoData.video}`}
+          // style={{ display: showThumbnail ? 'none' : 'block' }}
           type="video/webm"
         >
         </video>
 
+        {isLoading && (
+          <div className="absolute w-full inset-0 flex items-center justify-center bg-black  z-50">
+            <Loader2 className="w-[200px] h-[200px] text-white animate-spin z-50" />
+          </div>
+        )}
+        
         {/* Info panel that appears on the right */}
         <div 
-          className="absolute top-0 right-0 z-50 h-full overflow-visible w-80 "
+          className="absolute top-0 right-0 z-40 h-full overflow-visible w-80 "
           onMouseEnter={() => setShowInfoPanel(true)}
           onMouseLeave={() => setShowInfoPanel(false)}
         >
@@ -195,7 +248,10 @@ const VideoPlayer = () => {
               >
               <MdNavigateBefore className="w-6 h-6"/>
             </button>
-            <button className="px-6 py-1 text-xl text-white transition-colors duration-200 bg-blue-500 rounded-lg hover:bg-blue-400">
+            <button 
+              className="px-6 py-1 text-xl text-white transition-colors duration-200 bg-blue-500 rounded-lg hover:bg-blue-400"
+              onClick={async() => {await onLiveVideo()}}
+              >
               Live
             </button>
             <button 
@@ -207,44 +263,6 @@ const VideoPlayer = () => {
           </div>
         </div>
       </div>
-
-      {/* Side Panel */}
-      {/* <div className="flex flex-col w-full bg-transparent rounded-none shadow-2xl h-100 md:w-1/5">
-        <div className="w-full p-4 bg-red-500 shadow-2xl md:rounded-r-3xl">
-          <p className="font-semibold text-center text-white ">
-            {videoData.metadata.name}
-          </p>
-        </div>
-        
-        <div className="p-4 mt-4 bg-green-600 rounded-r-3xl">
-          <label className="block mb-2 font-semibold text-center text-white">
-            Select Date:
-          </label>
-          <DatePicker
-            selected={selectedDate}
-            onChange={(date) => setSelectedDate(date)}
-            dateFormat="MMMM d, yyyy"
-            className="w-full p-2 text-center border rounded-md"
-            popperPlacement="bottom"
-            showPopperArrow={false}
-          />
-        </div>
-        
-        <div className="items-center w-full h-full p-4 mt-3 bg-gray-800 md:rounded-r-3xl">
-          <p className="mt-4 font-semibold text-center text-white">
-            {videoData.metadata.owner}
-          </p>
-          <p className="mt-4 font-semibold text-center text-white">
-            {videoData.metadata.date}
-          </p>
-          <p className="mt-4 font-semibold text-center text-white">
-            {videoData.metadata.date_released}
-          </p>
-          <p className="mt-4 font-semibold text-center text-white">
-            {videoData.metadata.length}
-          </p>
-        </div>
-      </div> */}
     </div>
   );
 };
