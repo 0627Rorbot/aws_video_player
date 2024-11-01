@@ -11,11 +11,12 @@ const CalendarPicker = ({ onDateChange }) => {
   };
 
   return (
-    <div className="flex items-center justify-center mt-4">
+    <div className="flex items-center justify-center mt-6">
       <DatePicker
         selected={selectedDate}
         onChange={handleDateChange}
-        className="p-2 bg-white border border-gray-400 rounded"
+        className="w-40 p-2 bg-white border border-gray-300 rounded-md"
+        dateFormat="yyyy-MM-dd"
       />
     </div>
   );
