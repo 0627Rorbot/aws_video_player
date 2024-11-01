@@ -14,12 +14,13 @@ const VideoPlayer = () => {
   const [hoverVisible, setHoverVisible] = useState(false);
   
   const [videoData, setVideoData] = useState({
-    "key":"2024/20241016-1458-S1",
-    "date":"2024-10-16T21:58:00.000Z",
-    "image":"https://planets17.s3.af-south-1.amazonaws.com/IMAGE/2024/20241016-1458-S1.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQMEY6FX5IYCEKG53%2F20241031%2Faf-south-1%2Fs3%2Faws4_request&X-Amz-Date=20241031T120518Z&X-Amz-Expires=86400&X-Amz-Signature=7da2a37dbdd5a6524c2ca6dd545ca907e1813d3a125bed20ba6b26402ab0eca6&X-Amz-SignedHeaders=host&x-id=GetObject",
-    "metadata":{"name":"How to set 0 point on ruler in adobe illustrator| rulers and guides in illustrator 2015 cc","owner":"@Juliapak","date_released":"2016-01-14","length":"00:36","starting_point":"0","quality":"1280x684","fps":"30","vcodec":"avc1.64001F","acodec":"opus","date_pasted":"2024-10-16","time_pasted":"14:58:02","new_name":"20241016-1458-S1","youtube_link":"https://www.youtube.com/watch?v=IrGuB4gSe8Q","chapters":""},
-    "subtitle":{},
-    "video":"https://planets17.s3.af-south-1.amazonaws.com/VIDEO/2024/20241016-1458-S1.mkv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQMEY6FX5IYCEKG53%2F20241031%2Faf-south-1%2Fs3%2Faws4_request&X-Amz-Date=20241031T120520Z&X-Amz-Expires=86400&X-Amz-Signature=2fd731cfed17eab35c03192d7241ba9f2459f2f58bda6b5d4b676446dd3c22dd&X-Amz-SignedHeaders=host&x-id=GetObject"}) 
+    date : "2021-10-06T05:14:00.000Z",
+    image : "https://planets17.s3.af-south-1.amazonaws.com/IMAGE/2021/20211006-0514-S30.jpg?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQMEY6FX5IYCEKG53%2F20241101%2Faf-south-1%2Fs3%2Faws4_request&X-Amz-Date=20241101T021657Z&X-Amz-Expires=86400&X-Amz-Signature=504fcbe24f1a0b3d04e025044fa86e5bee172a633e7f302f7218beb788864df1&X-Amz-SignedHeaders=host&x-id=GetObject",
+    key : "2021/20211006-0514-S30",
+    metadata : {"name": 'TASH SULTANA - LET THE LIGHT IN (Live at Lonely Lands Studio)', owner: '@TashSultanaMusic', date_released: '2021-10-05', length: '03:55', starting_point: '0'},
+    subtitle : {},
+    video : "https://planets17.s3.af-south-1.amazonaws.com/VIDEO/2021/20211006-0514-S30.mkv?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Content-Sha256=UNSIGNED-PAYLOAD&X-Amz-Credential=AKIAQMEY6FX5IYCEKG53%2F20241101%2Faf-south-1%2Fs3%2Faws4_request&X-Amz-Date=20241101T021658Z&X-Amz-Expires=86400&X-Amz-Signature=3d3efbdc76edc1ceed40dae51f1f35c330c499f14ef84628ce00c57af15c504c&X-Amz-SignedHeaders=host&x-id=GetObject"
+  }) 
     
   const [selectedDate, setSelectedDate] = useState(new Date(videoData.date));
   
