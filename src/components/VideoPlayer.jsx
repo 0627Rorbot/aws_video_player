@@ -34,6 +34,7 @@ const VideoPlayer = () => {
 
   const onNextVideo = async(date) => {
     setIsLoading(true)
+    videoRef.current.pause()
 
     const video = await API.get(`/videos/next`, {
       params: {
@@ -85,6 +86,7 @@ const VideoPlayer = () => {
 
   const onDateVideo = async(date) => {
     setIsLoading(true)
+    videoRef.current.pause()
 
     const video = await API.get(`/videos/date`, {
       params: {
@@ -103,6 +105,7 @@ const VideoPlayer = () => {
 
   const onLiveVideo = async() => {
     setIsLoading(true)
+    videoRef.current.pause()
 
     const video = await API.get(`/videos/live`);
     console.log(video);
@@ -122,6 +125,7 @@ const VideoPlayer = () => {
   
   const onBeforeVideo = async(date) => {
     setIsLoading(true)
+    videoRef.current.pause()
 
     const video = await API.get(`/videos/before`, {
       params: {
