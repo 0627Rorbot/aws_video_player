@@ -24,7 +24,7 @@ const VideoPlayer = () => {
   const [selectedDate, setSelectedDate] = useState(new Date(videoData.date));
   
   const API = axios.create({
-    baseURL: "http://localhost:5000/api",
+    baseURL: process.env.REACT_APP_API_URL,
   });
 
   const onNextVideo = async(date) => {
