@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 const VideoPlayer = () => {
   const [showInfoPanel, setShowInfoPanel] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [first, setFirst] = useState(false)
 
   const [hoverVisible, setHoverVisible] = useState(false);
   
@@ -41,6 +42,22 @@ const VideoPlayer = () => {
     }
   }
 
+  useEffect(() => {
+    const getRecentVideo = async () => {
+      try {
+        const video = await API.get(`/videos/recent`);
+        console.log(video);
+        
+        if(video.data.status) {
+          setVideoData(video.data.data)
+        }
+      } catch (err) {
+        console.log(err);
+      } 
+    };
+
+    getRecentVideo();
+  }, [])
   
   const onDateVideo = async(date) => {
     const video = await API.get(`/videos/date`, {
